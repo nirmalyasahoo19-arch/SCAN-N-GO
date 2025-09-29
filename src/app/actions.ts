@@ -22,24 +22,6 @@ const productDatabase: {
   "016000124119": { name: "Crunchy Cereal", price: 4.49, originalPrice: 4.99, specialOffer: "Save 10%", imageUrl: "https://picsum.photos/seed/item8/100/100" },
 };
 
-export async function fetchRecommendations(scannedItems: string[]) {
-  try {
-    if (scannedItems.length === 0) {
-      return [];
-    }
-    
-    // AI features are disabled for now.
-    // In a real app, you would call your AI model here.
-
-    // Return mock data since AI is disabled
-    return ["Sparkling Water, 12-pack", "Classic Potato Chips"];
-  } catch (error) {
-    console.error("Error fetching recommendations:", error);
-    // In case of an AI error, return an empty array or some fallback recommendations
-    return ["Sparkling Water, 12-pack", "Classic Potato Chips"];
-  }
-}
-
 export async function getProductDetails(barcode: string) {
     return productDatabase[barcode] || { name: `Unknown Item (${barcode})`, price: 0.00, imageUrl: "https://picsum.photos/seed/unknown/100/100" };
 }
