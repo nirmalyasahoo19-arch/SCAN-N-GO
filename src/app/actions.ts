@@ -1,7 +1,7 @@
 
 "use server";
 
-import { getProductRecommendations, type ProductRecommendationsInput } from '@/ai/flows/product-recommendations';
+// import { getProductRecommendations, type ProductRecommendationsInput } from '@/ai/flows/product-recommendations';
 
 // Mock product data - in a real app, this would come from a database
 const productDatabase: { 
@@ -30,15 +30,18 @@ export async function fetchRecommendations(scannedItems: string[]) {
       return [];
     }
 
-    const input: ProductRecommendationsInput = { scannedItems };
-    const result = await getProductRecommendations(input);
+    // const input: ProductRecommendationsInput = { scannedItems };
+    // const result = await getProductRecommendations(input);
     
-    // The AI returns barcode strings. We map them to product names for the UI.
-    const recommendedProducts = result.recommendedProducts
-      .map(barcode => productDatabase[barcode] ? productDatabase[barcode].name : null)
-      .filter((name): name is string => name !== null);
+    // // The AI returns barcode strings. We map them to product names for the UI.
+    // const recommendedProducts = result.recommendedProducts
+    //   .map(barcode => productDatabase[barcode] ? productDatabase[barcode].name : null)
+    //   .filter((name): name is string => name !== null);
 
-    return recommendedProducts;
+    // return recommendedProducts;
+
+    // Return mock data since AI is disabled
+    return ["Sparkling Water, 12-pack", "Classic Potato Chips"];
   } catch (error) {
     console.error("Error fetching recommendations:", error);
     // In case of an AI error, return an empty array or some fallback recommendations
