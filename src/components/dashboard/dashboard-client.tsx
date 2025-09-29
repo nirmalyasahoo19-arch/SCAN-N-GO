@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useTransition, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { Barcode, Heart, ShoppingCart, Loader2, CreditCard, BookmarkPlus, Box, Percent, Banknote, Tag, Smartphone, XCircle, Undo, Info } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { HowItWorks } from "./how-it-works";
 import { WhyYoullLoveIt } from "./why-youll-love-it";
-import { fetchRecommendations, getProductDetails } from "@/app/actions";
+import { getProductDetails } from "@/app/actions";
 import { UpiPaymentDialog } from "./upi-payment-dialog";
 import { DigitalReceiptDialog } from "./digital-receipt-dialog";
 import type { Order } from "@/lib/types";
@@ -47,9 +47,7 @@ export default function DashboardClient() {
   const [scannedItems, setScannedItems] = useState<ScannedItem[]>([]);
   const [savedForLater, setSavedForLater] = useState<ScannedItem[]>([]);
   const [cancelledItems, setCancelledItems] = useState<ScannedItem[]>([]);
-  const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isScanning, setIsScanning] = useState(false);
-  const [isFetchingRecs, startRecsTransition] = useTransition();
   const [isUpiDialogOpen, setIsUpiDialogOpen] = useState(false);
   const [lastOrder, setLastOrder] = useState<Order | null>(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
@@ -119,7 +117,6 @@ export default function DashboardClient() {
     });
 
     setScannedItems([]);
-    setRecommendations([]);
     setCancelledItems([]);
     setIsUpiDialogOpen(false);
     setPaymentMethod(null);
@@ -149,19 +146,6 @@ export default function DashboardClient() {
     const toTitle = { 'cart': 'Cart', 'saved': 'Saved List', 'cancelled': 'Cancelled Items' }[to];
     toast({ title: `Item moved to ${toTitle}`, description: `${item.name} has been moved.` });
   };
-
-
-  useEffect(() => {
-    if (scannedItems.length > 0) {
-      startRecsTransition(async () => {
-        const itemBarcodes = scannedItems.map(item => item.barcode);
-        const recs = await fetchRecommendations(itemBarcodes);
-        setRecommendations(recs);
-      });
-    } else {
-        setRecommendations([]);
-    }
-  }, [scannedItems]);
 
   const totalCost = scannedItems.reduce((acc, item) => acc + item.price, 0);
   const totalSavings = scannedItems.reduce((acc, item) => acc + (item.originalPrice ? item.originalPrice - item.price : 0), 0);
@@ -387,22 +371,7 @@ export default function DashboardClient() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {isFetchingRecs ? (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Generating recommendations...</span>
-              </div>
-            ) : recommendations.length > 0 ? (
-              <ul className="grid grid-cols-2 gap-2">
-                {recommendations.map((rec, index) => (
-                  <li key={index} className="bg-primary/10 text-primary-foreground p-3 rounded-md text-sm text-center font-medium text-primary">
-                    {rec}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted-foreground">Scan an item to get personalized suggestions. AI features are temporarily disabled.</p>
-            )}
+              <p className="text-muted-foreground">This feature is temporarily disabled.</p>
           </CardContent>
         </Card>
       </div>
