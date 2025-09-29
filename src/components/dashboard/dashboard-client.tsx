@@ -155,8 +155,8 @@ export default function DashboardClient() {
     if (scannedItems.length > 0) {
       startRecsTransition(async () => {
         const itemBarcodes = scannedItems.map(item => item.barcode);
-        // const recs = await fetchRecommendations(itemBarcodes);
-        // setRecommendations(recs);
+        const recs = await fetchRecommendations(itemBarcodes);
+        setRecommendations(recs);
       });
     } else {
         setRecommendations([]);
