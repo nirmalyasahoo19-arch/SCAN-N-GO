@@ -155,8 +155,8 @@ export default function DashboardClient() {
     if (scannedItems.length > 0) {
       startRecsTransition(async () => {
         const itemBarcodes = scannedItems.map(item => item.barcode);
-        const recs = await fetchRecommendations(itemBarcodes);
-        setRecommendations(recs);
+        // const recs = await fetchRecommendations(itemBarcodes);
+        // setRecommendations(recs);
       });
     } else {
         setRecommendations([]);
@@ -401,7 +401,7 @@ export default function DashboardClient() {
                 ))}
               </ul>
             ) : (
-              <p className="text-muted-foreground">Scan an item to get personalized suggestions from our AI assistant.</p>
+              <p className="text-muted-foreground">Scan an item to get personalized suggestions. AI features are temporarily disabled.</p>
             )}
           </CardContent>
         </Card>
